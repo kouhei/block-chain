@@ -1,5 +1,7 @@
 import {blockChain} from "./blockChain"
 
+// TODO: api化
+
 // add new transaction
 const index = blockChain.createNewTransaction("alice", "bob", 5);
 console.log(`トランザクションはブロック ${index} に追加されました`);
