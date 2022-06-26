@@ -25,7 +25,7 @@ class Block{
 }
 
 class BlockChain{
-    private chain: Map<Index,Block>;
+    chain: Map<Index,Block>;
     private current_transactions: Transaction[];
 
     constructor(){
@@ -37,7 +37,7 @@ class BlockChain{
      * create a new block and add it chain
      * return new block
      */
-    private addNewBlockToChain(proof: Block["proof"], previousHash: Block["previousHash"] = null):Block{
+    addNewBlockToChain(proof: Block["proof"], previousHash: Block["previousHash"] = null):Block{
         const index = this.chain.size + 1;
         const newBlock = new Block(
             index,
@@ -59,7 +59,7 @@ class BlockChain{
      * @param amount
      * @return address of the next block
      */
-    private newTransaction(sender: Transaction["sender"], recipient: Transaction["recipient"], amount: Transaction["amount"]):Number{
+    createNewTransaction(sender: Transaction["sender"], recipient: Transaction["recipient"], amount: Transaction["amount"]):Number{
         this.current_transactions.push(
             new Transaction(sender, recipient, amount)
         );
@@ -76,7 +76,7 @@ class BlockChain{
         return this.chain.get(this.chain.size - 1);
     }
 
-    private calcProofOfWork(lastProof: Proof){
+    calcProofOfWork(lastProof: Proof){
         let proof = 0;
         while(!this.checkProof(lastProof, proof)){
             proof++;
@@ -87,7 +87,7 @@ class BlockChain{
     /**
      * last_proofとproofのハッシュを計算し、最初の４つが0か確認する
     */
-    private checkProof(lastProof:Proof, proof:Proof){
+    checkProof(lastProof:Proof, proof:Proof){
         const guess = `${lastProof}${proof}`;
         const guessHash = encryptSha256(guess);
         return guessHash.slice(-4) === "0000";
