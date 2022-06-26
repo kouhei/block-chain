@@ -44,7 +44,7 @@ class BlockChain{
             Date.now(),
             this.current_transactions,
             proof,
-            previousHash || BlockChain.hash(this.chain[this.chain.size - 1])
+            previousHash || BlockChain.generateHash(this.chain[this.chain.size - 1])
         );
         this.current_transactions = [];
         this.chain.set(index, newBlock);
