@@ -69,16 +69,37 @@ class BlockChain{
     static generateHash(block: Block):Hash {
         const blockMap = new Map(Object.entries(block));
         const jsonStr = JSON.stringify(Array.from(blockMap));
-        const hash = createHash('sha256');
-        hash.update(jsonStr);
-        return hash.digest('hex')
+        return encryptSha256(jsonStr);
     }
 
     get lastBlock(): Block {
         return this.chain.get(this.chain.size - 1);
     }
 
-    /* TODO: ここから
-    https://qiita.com/hidehiro98/items/841ece65d896aeaa8a2a#%E3%83%97%E3%83%AB%E3%83%BC%E3%83%95%E3%82%AA%E3%83%96%E3%83%AF%E3%83%BC%E3%82%AF%E3%82%92%E7%90%86%E8%A7%A3%E3%81%99%E3%82%8B
+    private calcProofOfWork(lastProof: Proof){
+        let proof = 0;
+        while(!this.checkProof(lastProof, proof)){
+            proof++;
+        }
+        return proof;
+    }
+
+    /**
+     * last_proofとproofのハッシュを計算し、最初の４つが0か確認する
     */
+    private checkProof(lastProof:Proof, proof:Proof){
+        const guess = `${lastProof}${proof}`;
+        const guessHash = encryptSha256(guess);
+        return guessHash.slice(-4) === "0000";
+    }
+
+    /* TODO: ここから
+    https://qiita.com/hidehiro98/items/841ece65d896aeaa8a2a#%E3%82%B9%E3%83%86%E3%83%83%E3%83%972-api%E3%81%A8%E3%81%97%E3%81%A6%E3%81%AE%E7%A7%81%E3%81%9F%E3%81%A1%E3%81%AE%E3%83%96%E3%83%AD%E3%83%83%E3%82%AF%E3%83%81%E3%82%A7%E3%83%BC%E3%83%B3
+    */
+}
+
+function encryptSha256(str: string){
+    const hash = createHash('sha256');
+    hash.update(str);
+    return hash.digest('hex')
 }
