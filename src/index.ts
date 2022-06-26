@@ -1,33 +1,37 @@
-import {blockChain} from "./blockChain"
+import { blockChain } from './blockChain';
 
 // TODO: api化
 
+console.log('initial chain');
+getChain();
+
 // add new transaction
-const index = blockChain.createNewTransaction("alice", "bob", 5);
-console.log(`トランザクションはブロック ${index} に追加されました`);
+const index = blockChain.createNewTransaction('alice', 'bob', 5);
+console.log(`トランザクションはブロック ${index} に追加されました
+`);
 
 mine();
-getChain();
 
 mine();
-getChain();
 
-function mine(){
-    const proof = blockChain.calcProofOfWork(blockChain.lastBlock.proof);
-    blockChain.createNewTransaction("0","kouhei",1);
-    const block = blockChain.addNewBlockToChain(proof);
-    console.log(`
-    新しいブロックを採掘しました
+function mine() {
+  const proof = blockChain.calcProofOfWork(blockChain.lastBlock.proof);
+  blockChain.createNewTransaction('0', 'kouhei', 1);
+  const block = blockChain.addNewBlockToChain(proof);
+  console.log(`新しいブロックを採掘しました
     index: ${block.index},
     transactions: ${JSON.stringify(block.transactions)},
     proof: ${block.proof},
     previous_hash: ${block.previousHash},
     `);
+  getChain();
 }
 
-function getChain(){
-    console.info(`
-    chain: ${JSON.stringify(Array.from(blockChain.chain))},
-    length: ${blockChain.chain.size},
+function getChain() {
+  const p = blockChain.generateBlockHash(blockChain.chain.get(blockChain.chain.size) as any);
+  console.log(`chain:
+    ${JSON.stringify(Object.fromEntries(blockChain.chain.entries()), null, 2)},
+length: ${blockChain.chain.size},
+proof: ${p}
     `);
 }
