@@ -31,20 +31,22 @@ class BlockChain{
     constructor(){
         this.chain = new Map();
         this.current_transactions = [];
+        // ジェネシスブロックを作る
+        this.addNewBlockToChain(100, "1");
     }
 
     /**
      * create a new block and add it chain
-     * return new block
+     * @return new block
      */
-    addNewBlockToChain(proof: Block["proof"], previousHash: Block["previousHash"] = null):Block{
+    addNewBlockToChain(proof: Block["proof"], previousHash: Block["previousHash"] = ""):Block{
         const index = this.chain.size + 1;
         const newBlock = new Block(
             index,
             Date.now(),
             this.current_transactions,
             proof,
-            previousHash || BlockChain.generateHash(this.chain.get(this.chain.size - 1))
+            previousHash || BlockChain.generateHash(this.chain.get(this.chain.size))
         );
         this.current_transactions = [];
         this.chain.set(index, newBlock);
@@ -73,7 +75,7 @@ class BlockChain{
     }
 
     get lastBlock(): Block {
-        return this.chain.get(this.chain.size - 1);
+        return this.chain.get(this.chain.size);
     }
 
     calcProofOfWork(lastProof: Proof){
@@ -88,9 +90,10 @@ class BlockChain{
      * last_proofとproofのハッシュを計算し、最初の４つが0か確認する
     */
     checkProof(lastProof:Proof, proof:Proof){
+        const NUMBER = 4;
         const guess = `${lastProof}${proof}`;
         const guessHash = encryptSha256(guess);
-        return guessHash.slice(-4) === "0000";
+        return guessHash.slice(-1 * NUMBER) === "".padStart(NUMBER, "0");
     }
 
     /* TODO: ここから
@@ -103,3 +106,5 @@ function encryptSha256(str: string){
     hash.update(str);
     return hash.digest('hex')
 }
+
+export const blockChain = new BlockChain();
