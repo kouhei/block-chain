@@ -53,7 +53,11 @@ class BlockChain{
 
     /**
      * create a new transaction and add to the list contained in next block.
-     * return address of the next block
+     * TODO: かく
+     * @param sender
+     * @param recipient
+     * @param amount
+     * @return address of the next block
      */
     private newTransaction(sender: Transaction["sender"], recipient: Transaction["recipient"], amount: Transaction["amount"]):Number{
         this.current_transactions.push(
@@ -63,7 +67,6 @@ class BlockChain{
     }
 
     static generateHash(block: Block):Hash {
-        // TODO: ここから　https://qiita.com/hidehiro98/items/841ece65d896aeaa8a2a#%E6%96%B0%E3%81%97%E3%81%84%E3%83%96%E3%83%AD%E3%83%83%E3%82%AF%E3%82%92%E4%BD%9C%E3%82%8B
         const blockMap = new Map(Object.entries(block));
         const jsonStr = JSON.stringify(Array.from(blockMap));
         const hash = createHash('sha256');
@@ -74,4 +77,8 @@ class BlockChain{
     get lastBlock(): Block {
         return this.chain.get(this.chain.size - 1);
     }
+
+    /* TODO: ここから
+    https://qiita.com/hidehiro98/items/841ece65d896aeaa8a2a#%E3%83%97%E3%83%AB%E3%83%BC%E3%83%95%E3%82%AA%E3%83%96%E3%83%AF%E3%83%BC%E3%82%AF%E3%82%92%E7%90%86%E8%A7%A3%E3%81%99%E3%82%8B
+    */
 }
