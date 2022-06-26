@@ -3,7 +3,7 @@ import { createHash } from 'crypto';
 type Uuid = string;
 type Amount = number;
 class Transaction {
-  constructor(public sender: Uuid, public recipient: Uuid, public amount: Amount) { }
+  constructor(public sender: Uuid, public recipient: Uuid, public amount: Amount) {}
 }
 
 type Proof = number;
@@ -17,7 +17,7 @@ class Block {
     public transactions: Transaction[],
     public proof: Proof,
     public previousHash: Hash
-  ) { }
+  ) {}
 }
 
 class BlockChain {

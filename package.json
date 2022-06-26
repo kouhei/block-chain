@@ -20,7 +20,7 @@
   "homepage": "https://github.com/kouhei/block-chain#readme",
   "devDependencies": {
     "@types/node": "^18.0.0",
-    "prettier": "^2.7.1"
+    "prettier": "2.7.1"
   },
   "dependencies": {
     "ts-node": "^10.8.1",
