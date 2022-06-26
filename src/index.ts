@@ -28,10 +28,10 @@ function mine() {
 }
 
 function getChain() {
-  const p = blockChain.generateBlockHash(blockChain.chain.get(blockChain.chain.size) as any);
+  const lastBlockHash = blockChain.generateBlockHash(blockChain.chain.get(blockChain.chain.size) as any);
   console.log(`chain:
     ${JSON.stringify(Object.fromEntries(blockChain.chain.entries()), null, 2)},
 length: ${blockChain.chain.size},
-proof: ${p}
+lastBlockHash: ${lastBlockHash}
     `);
 }
