@@ -33,6 +33,8 @@ class BlockChain {
 
   /**
    * create a new block and add it chain
+   * @param proof 新しいブロックのproof of work
+   * @param previousHash 一つ前のハッシュ値。与えられなかった場合は現在の最新のブロックのハッシュを使う。
    * @return new block
    */
   addNewBlockToChain(proof: Block['proof'], previousHash: Block['previousHash'] = ''): Block {
@@ -51,10 +53,9 @@ class BlockChain {
 
   /**
    * create a new transaction and add to the list contained in next block.
-   * TODO: かく
-   * @param sender
-   * @param recipient
-   * @param amount
+   * @param sender 送信者
+   * @param recipient 受信者
+   * @param amount 送った数量
    * @return address of the next block
    */
   createNewTransaction(
