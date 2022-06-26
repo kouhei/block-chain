@@ -1,6 +1,6 @@
 {
-    "compilerOptions": {
-        "target": "ES2021",
-        "strictNullChecks": false
-    }
+  "compilerOptions": {
+    "target": "ES2021",
+    "strict": true
+  }
 }
