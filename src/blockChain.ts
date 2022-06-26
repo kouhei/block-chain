@@ -1,4 +1,5 @@
 import { createHash } from 'crypto';
+import { default as axios } from 'axios';
 
 type Uuid = string;
 type Amount = number;
@@ -20,12 +21,21 @@ class Block {
   ) {}
 }
 
+type NodeAddress = string;
+
 class BlockChain {
+  /** ブロックチェーンのデータを格納するところ */
   chain: Map<Index, Block>;
+
+  /** ネットワーク上のノードリスト */
+  nodes: Set<NodeAddress>; // TODO: example.com みたいな形式を想定。プロトコルやパスがついてても問題なく動くようにする
+
+  /** ブロックとして追加されていないトランザクション */
   private current_transactions: Transaction[];
 
   constructor() {
     this.chain = new Map();
+    this.nodes = new Set();
     this.current_transactions = [];
     // ジェネシスブロックを作る
     this.addNewBlockToChain(100, '1');
@@ -94,6 +104,66 @@ class BlockChain {
     const guess = `${lastProof}${proof}`;
     const guessHash = encryptSha256(guess);
     return guessHash.slice(-1 * NUMBER) === ''.padStart(NUMBER, '0');
+  }
+
+  /** ノードリストに新しいノードを追加する
+   * @param address ノードのアドレス
+   */
+  registerNode(address: NodeAddress) {
+    this.nodes.add(address);
+  }
+
+  /** ブロックチェーンが正しいかを確認する */
+  validChain(chain: BlockChain['chain']) {
+    let current_index = 1;
+    let lastBlock = chain.get(current_index) as Block;
+
+    while (current_index <= chain.size) {
+      const block = chain.get(current_index);
+      if (!block) {
+        return false;
+      }
+
+      // ハッシュと proof of work の確認
+      const hasCorrectHash = block?.previousHash === this.generateBlockHash(lastBlock);
+      const isCorrectProof = this.checkProof(lastBlock.proof, block.proof);
+      if (!hasCorrectHash || !isCorrectProof) {
+        return false;
+      }
+
+      lastBlock = block;
+      current_index++;
+    }
+    return true;
+  }
+
+  /** コンセンサスアルゴリズム。自分のチェーンをネットワーク上の最も長いチェーンに置き換えコンフリクトを解消する
+   * @return 自分のチェーンが置き換えられたかどうか
+   */
+  async resolveConflicts() {
+    const neighbours = this.nodes;
+    let newChain: BlockChain['chain'] | null = null;
+    let maxLength = this.chain.size;
+
+    for (const node of neighbours) {
+      const res = await axios.get(`${node}/chain`);
+      if (res.status === 200) {
+        length = res.data.length;
+        const chain = res.data.chain;
+        // 自身のチェーンより長くて有効なチェーンがあったらそれで置き換える
+        if (length > length && this.validChain(chain)) {
+          maxLength = length;
+          newChain = chain;
+        }
+      }
+    }
+
+    if (newChain) {
+      this.chain = newChain;
+      return true;
+    }
+
+    return false;
   }
 }
 
