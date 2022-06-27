@@ -1,5 +1,5 @@
 import { default as axios } from 'axios';
-import { Block, Chain, Hash, Index, NodeAddress, Transaction } from '../models/types';
+import { Amount, Block, Chain, Hash, Index, NodeAddress, Proof, Transaction, Uuid } from '../models/types';
 import { checkProof, encryptSha256 } from './utils/util';
 
 class BlockChain {
@@ -36,7 +36,7 @@ class BlockChain {
    * @param previousHash 一つ前のハッシュ値。与えられなかった場合は現在の最新のブロックのハッシュを使う。
    * @return new block
    */
-  addNewBlockToChain(proof: Block['proof'], previousHash: Block['previousHash'] = ''): Block {
+  addNewBlockToChain(proof: Proof, previousHash: Hash = ''): Block {
     const index = this._chain.size + 1;
     const newBlock = new Block(
       index,
@@ -57,11 +57,7 @@ class BlockChain {
    * @param amount 送った数量
    * @return address of new block contains created transacition
    */
-  createNewTransaction(
-    sender: Transaction['sender'],
-    recipient: Transaction['recipient'],
-    amount: Transaction['amount']
-  ): number {
+  createNewTransaction(sender: Uuid, recipient: Uuid, amount: Amount): number {
     this.current_transactions.push(new Transaction(sender, recipient, amount));
     return this.lastBlock.index + 1;
   }
