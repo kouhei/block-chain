@@ -1,7 +1,7 @@
 import { default as axios } from 'axios';
-import { Proof } from '../../domain';
 import { Block, Hash, Index } from '../../domain/block';
 import { Amount, Transaction, Transactions, Uuid } from '../../domain/transaction';
+import { Proof } from '../../domain/types';
 import { checkProof, encryptSha256 } from '../../utils/util';
 
 export type NodeAddress = string;
