@@ -1,5 +1,5 @@
 import * as express from 'express';
-import { blockChain } from '../../core/application/services/blockChain';
+import { createNewTransaction } from '../../core/application/useCases/createNewTransactionUseCase';
 
 export const router = express.Router();
 
@@ -12,7 +12,8 @@ router.post('/new', (req, res) => {
     res.status(400).send('sender, resipient and amount is necessary');
     return;
   }
-  const blockId = blockChain.createNewTransaction(sender as string, recipient as string, amount);
+
+  const blockId = createNewTransaction(sender as string, recipient as string, amount);
 
   res.status(201).json({
     blockId,

@@ -1,17 +1,10 @@
 import * as express from 'express';
-import { blockChain } from '../../core/application/services/blockChain';
-import { Miner } from '../../core/application/services/miner';
-import { node_id } from '../util';
-
-const miner = new Miner();
+import { mineBlock } from '../../core/application/useCases/mineBlockUseCase';
 
 export const router = express.Router();
 
 router.get('/', (_req, res) => {
-  const newProof = miner.calcProofOfWork(blockChain.lastBlock.proof);
-  // sender は採掘者が新しいコインを採掘したことを表すために"0"とする
-  blockChain.createNewTransaction('0', node_id, 1);
-  const { index, transactions, proof, previousHash } = blockChain.addNewBlockToChain(newProof);
+  const { index, transactions, proof, previousHash } = mineBlock();
 
   res.status(200).json({
     message: '新しいブロックを採掘しました',

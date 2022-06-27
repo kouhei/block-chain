@@ -1,4 +1,4 @@
-import { ITransactions } from './transaction';
+import { Transaction } from './transaction';
 import { Proof } from './types';
 
 export type Hash = string;
@@ -9,7 +9,7 @@ export class Block {
   constructor(
     public index: Index,
     public timestamp: TimeStamp,
-    public transactions: ITransactions,
+    public transactions: Transaction[],
     public proof: Proof,
     public previousHash: Hash
   ) {}
