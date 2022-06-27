@@ -1,5 +1,5 @@
-import { Proof } from '../models/types';
-import { checkProof } from './utils/util';
+import { Proof } from '../../domain/types';
+import { checkProof } from '../../utils/util';
 
 export class Miner {
   calcProofOfWork(lastProof: Proof) {

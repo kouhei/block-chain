@@ -1,9 +1,6 @@
 import * as bodyParser from 'body-parser';
 import * as express from 'express';
-import { router as chain } from './chain';
-import { router as mine } from './mine';
-import { router as nodes } from './nodes';
-import { router as transactions } from './transactions';
+import { chain, mine, nodes, transactions } from './endpoints';
 
 const port = Number.parseInt(process.argv[2]) || 3000;
 const app = express();

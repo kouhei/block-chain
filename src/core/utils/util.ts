@@ -1,5 +1,5 @@
 import { createHash } from 'crypto';
-import { Proof } from '../../models/types';
+import { Proof } from '../domain';
 
 export function encryptSha256(str: string) {
   const hash = createHash('sha256');

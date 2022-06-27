@@ -1,5 +1,5 @@
 import * as express from 'express';
-import { blockChain } from '../core/blockChain';
+import { blockChain } from '../../core/application/services/blockChain';
 
 export const router = express.Router();
 

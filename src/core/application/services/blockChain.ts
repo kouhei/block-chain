@@ -1,16 +1,23 @@
 import { default as axios } from 'axios';
-import { Amount, Block, Chain, Hash, Index, NodeAddress, Proof, Transaction, Uuid } from '../models/types';
-import { checkProof, encryptSha256 } from './utils/util';
+import { Proof } from '../../domain';
+import { Block, Hash, Index } from '../../domain/block';
+import { Amount, Transaction, Transactions, Uuid } from '../../domain/transaction';
+import { checkProof, encryptSha256 } from '../../utils/util';
 
+export type NodeAddress = string;
+
+export type Chain = { [index: string]: Block };
+
+// TODO: chain, nodesなどのそれぞれのドメインオブジェクトを作って、blockChainServiceでメソッドを持つ。
 class BlockChain {
   /** ブロックチェーンのデータを格納するところ */
   private _chain: Map<Index, Block>;
 
+  /** ブロックとして追加されていないトランザクション */
+  private current_transactions: Transactions;
+
   /** ネットワーク上のノードリスト */
   nodes: Set<NodeAddress>; // TODO: http://example.com みたいな形式を想定。プロトコルやパスがついてても問題なく動くようにする
-
-  /** ブロックとして追加されていないトランザクション */
-  private current_transactions: Transaction[];
 
   get lastBlock(): Block {
     return this._chain.get(this._chain.size) as Block;
@@ -23,10 +30,10 @@ class BlockChain {
   constructor() {
     this._chain = new Map();
     this.nodes = new Set();
-    this.current_transactions = [];
+    this.current_transactions = new Transactions();
     // ジェネシスブロックを作る
     const index = 1;
-    const newBlock = new Block(index, new Date('2022-06-27T03:54:00.000Z').getTime(), [], 100, '1');
+    const newBlock = new Block(index, new Date('2022-06-27T03:54:00.000Z').getTime(), new Transactions(), 100, '1');
     this._chain.set(index, newBlock);
   }
 
@@ -45,7 +52,7 @@ class BlockChain {
       proof,
       previousHash || this.generateBlockHash(this._chain.get(this._chain.size) as Block)
     );
-    this.current_transactions = [];
+    this.current_transactions = new Transactions();
     this._chain.set(index, newBlock);
     return newBlock;
   }
@@ -58,7 +65,7 @@ class BlockChain {
    * @return address of new block contains created transacition
    */
   createNewTransaction(sender: Uuid, recipient: Uuid, amount: Amount): number {
-    this.current_transactions.push(new Transaction(sender, recipient, amount));
+    this.current_transactions.add(new Transaction(sender, recipient, amount));
     return this.lastBlock.index + 1;
   }
 
@@ -118,27 +125,31 @@ class BlockChain {
     let maxLength = this._chain.size;
 
     for (const node of neighbours) {
-      const res = await axios.get(`${node}/chain`);
+      try {
+        const res = await axios.get(`${node}/chain`);
 
-      if (res.status !== 200) {
-        console.warn(`node(${node}): status is ${res.status}`);
-        continue;
-      }
-      if (!Number.parseInt(res.data?.length) || !res.data?.chain) {
-        console.warn(`node(${node}): invalid length or chain`);
-        continue;
-      }
+        if (res.status !== 200) {
+          console.warn(`node(${node}): status is ${res.status}`);
+          continue;
+        }
+        if (!Number.parseInt(res.data?.length) || !res.data?.chain) {
+          console.warn(`node(${node}): invalid length or chain`);
+          continue;
+        }
 
-      const length = Number.parseInt(res.data.length);
-      const chain = new Map(
-        Object.entries(res.data.chain).map(([key, value]) => [Number.parseInt(key), value])
-      ) as BlockChain['_chain'];
+        const length = Number.parseInt(res.data.length);
+        const chain = new Map(
+          Object.entries(res.data.chain).map(([key, value]) => [Number.parseInt(key), value])
+        ) as BlockChain['_chain'];
 
-      // 自身のチェーンより長くて有効なチェーンがあったらそれで置き換える
-      if (length > maxLength && this.validChain(chain)) {
-        console.debug('replaced chain by', node);
-        maxLength = length;
-        newChain = chain;
+        // 自身のチェーンより長くて有効なチェーンがあったらそれで置き換える
+        if (length > maxLength && this.validChain(chain)) {
+          console.debug('replaced chain by', node);
+          maxLength = length;
+          newChain = chain;
+        }
+      } catch (error) {
+        console.error(error);
       }
     }
 

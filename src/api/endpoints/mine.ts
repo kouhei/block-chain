@@ -1,7 +1,7 @@
 import * as express from 'express';
-import { blockChain } from '../core/blockChain';
-import { Miner } from '../core/miner';
-import { node_id } from './util';
+import { blockChain } from '../../core/application/services/blockChain';
+import { Miner } from '../../core/application/services/miner';
+import { node_id } from '../util';
 
 const miner = new Miner();
 
