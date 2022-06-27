@@ -1,7 +1,10 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import { v4 as uuidv4 } from 'uuid';
-import { blockChain } from './blockChain';
+import { blockChain } from '../core/blockChain';
+import { Miner } from '../core/miner';
+
+const miner = new Miner();
 
 const port = Number.parseInt(process.argv[2]) || 3000;
 
@@ -31,7 +34,7 @@ app.post('/transactions/new', (req, res) => {
 });
 
 app.get('/mine', (_req, res) => {
-  const newProof = blockChain.calcProofOfWork(blockChain.lastBlock.proof);
+  const newProof = miner.calcProofOfWork(blockChain.lastBlock.proof);
   // sender は採掘者が新しいコインを採掘したことを表すために"0"とする
   blockChain.createNewTransaction('0', node_id, 1);
   const { index, transactions, proof, previousHash } = blockChain.addNewBlockToChain(newProof);
