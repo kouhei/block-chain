@@ -1,5 +1,5 @@
-import * as express from 'express';
 import * as bodyParser from 'body-parser';
+import * as express from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import { blockChain } from '../core/blockChain';
 import { Miner } from '../core/miner';

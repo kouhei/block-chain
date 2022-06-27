@@ -1,5 +1,5 @@
 import { Proof } from '../models/types';
-import { checkProof, encryptSha256 } from '../utils/util';
+import { checkProof } from '../utils/util';
 
 export class Miner {
   calcProofOfWork(lastProof: Proof) {

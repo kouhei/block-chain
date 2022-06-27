@@ -1,5 +1,5 @@
 import { default as axios } from 'axios';
-import { Index, NodeAddress, Transaction, Block, Hash, Proof } from '../models/types';
+import { Block, Hash, Index, NodeAddress, Transaction } from '../models/types';
 import { checkProof, encryptSha256 } from '../utils/util';
 
 class BlockChain {
