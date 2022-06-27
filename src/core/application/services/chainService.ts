@@ -2,7 +2,7 @@ import { default as axios } from 'axios';
 import { Block } from '../../domain/block';
 import { Chain, IChain } from '../../domain/chain';
 import { Proof } from '../../domain/types';
-import { checkProof } from '../../utils/util';
+import { checkProof } from '../../domain/utils/util';
 import { blockService } from './blockService';
 
 class ChainService {

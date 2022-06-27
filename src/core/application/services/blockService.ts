@@ -1,7 +1,7 @@
 import { Block, Hash } from '../../domain/block';
 import { Amount, ITransactions, Transaction, Transactions, Uuid } from '../../domain/transaction';
 import { Proof } from '../../domain/types';
-import { encryptSha256 } from '../../utils/util';
+import { encryptSha256 } from '../../domain/utils/util';
 
 class BlockService {
   constructor(private transactions: ITransactions) {}
