@@ -19,3 +19,5 @@ export class Block {
 }
 
 export type NodeAddress = string;
+
+export type Chain = { [index: string]: Block };

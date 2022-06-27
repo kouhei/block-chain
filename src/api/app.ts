@@ -51,8 +51,8 @@ app.get('/mine', (_req, res) => {
 app.get('/chain', (_req, res) => {
   const chain = blockChain.chain;
   const body = {
-    chain: Object.fromEntries(blockChain.chain.entries()),
-    length: chain.size,
+    chain,
+    length: Object.keys(chain).length,
   };
   res.send(body);
 });
@@ -77,7 +77,7 @@ app.get('/nodes/resolve', async (req, res) => {
   const isReplaced = await blockChain.resolveConflicts();
   res.status(200).json({
     message: isReplaced ? 'チェーンが置き換えられました' : 'チェーンが確認されました',
-    chain: Object.fromEntries(blockChain.chain.entries()),
+    chain: blockChain.chain,
   });
 });
 

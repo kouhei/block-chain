@@ -1,10 +1,10 @@
 import { default as axios } from 'axios';
-import { Block, Hash, Index, NodeAddress, Transaction } from '../models/types';
+import { Block, Chain, Hash, Index, NodeAddress, Transaction } from '../models/types';
 import { checkProof, encryptSha256 } from './utils/util';
 
 class BlockChain {
   /** ブロックチェーンのデータを格納するところ */
-  chain: Map<Index, Block>;
+  private _chain: Map<Index, Block>;
 
   /** ネットワーク上のノードリスト */
   nodes: Set<NodeAddress>; // TODO: http://example.com みたいな形式を想定。プロトコルやパスがついてても問題なく動くようにする
@@ -12,14 +12,22 @@ class BlockChain {
   /** ブロックとして追加されていないトランザクション */
   private current_transactions: Transaction[];
 
+  get lastBlock(): Block {
+    return this._chain.get(this._chain.size) as Block;
+  }
+
+  get chain(): Chain {
+    return Object.fromEntries(this._chain.entries());
+  }
+
   constructor() {
-    this.chain = new Map();
+    this._chain = new Map();
     this.nodes = new Set();
     this.current_transactions = [];
     // ジェネシスブロックを作る
     const index = 1;
     const newBlock = new Block(index, new Date('2022-06-27T03:54:00.000Z').getTime(), [], 100, '1');
-    this.chain.set(index, newBlock);
+    this._chain.set(index, newBlock);
   }
 
   /**
@@ -29,16 +37,16 @@ class BlockChain {
    * @return new block
    */
   addNewBlockToChain(proof: Block['proof'], previousHash: Block['previousHash'] = ''): Block {
-    const index = this.chain.size + 1;
+    const index = this._chain.size + 1;
     const newBlock = new Block(
       index,
       Date.now(),
       this.current_transactions,
       proof,
-      previousHash || this.generateBlockHash(this.chain.get(this.chain.size) as Block)
+      previousHash || this.generateBlockHash(this._chain.get(this._chain.size) as Block)
     );
     this.current_transactions = [];
-    this.chain.set(index, newBlock);
+    this._chain.set(index, newBlock);
     return newBlock;
   }
 
@@ -65,10 +73,6 @@ class BlockChain {
     return encryptSha256(jsonStr);
   }
 
-  get lastBlock(): Block {
-    return this.chain.get(this.chain.size) as Block;
-  }
-
   /** ノードリストに新しいノードを追加する
    * @param address ノードのアドレス
    */
@@ -78,7 +82,7 @@ class BlockChain {
   }
 
   /** ブロックチェーンが正しいかを確認する */
-  validChain(chain: BlockChain['chain']) {
+  validChain(chain: BlockChain['_chain']) {
     let current_index = 1;
     let lastBlock = chain.get(current_index) as Block;
 
@@ -114,8 +118,8 @@ class BlockChain {
    */
   async resolveConflicts() {
     const neighbours = this.nodes;
-    let newChain: BlockChain['chain'] | null = null;
-    let maxLength = this.chain.size;
+    let newChain: BlockChain['_chain'] | null = null;
+    let maxLength = this._chain.size;
 
     for (const node of neighbours) {
       const res = await axios.get(`${node}/chain`);
@@ -132,7 +136,7 @@ class BlockChain {
       const length = Number.parseInt(res.data.length);
       const chain = new Map(
         Object.entries(res.data.chain).map(([key, value]) => [Number.parseInt(key), value])
-      ) as BlockChain['chain'];
+      ) as BlockChain['_chain'];
 
       // 自身のチェーンより長くて有効なチェーンがあったらそれで置き換える
       if (length > maxLength && this.validChain(chain)) {
@@ -143,7 +147,7 @@ class BlockChain {
     }
 
     if (newChain) {
-      this.chain = newChain;
+      this._chain = newChain;
       return true;
     }
 
