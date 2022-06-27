@@ -1,6 +1,6 @@
 import { default as axios } from 'axios';
 import { Block, Hash, Index, NodeAddress, Transaction } from '../models/types';
-import { checkProof, encryptSha256 } from '../utils/util';
+import { checkProof, encryptSha256 } from './utils/util';
 
 class BlockChain {
   /** ブロックチェーンのデータを格納するところ */
