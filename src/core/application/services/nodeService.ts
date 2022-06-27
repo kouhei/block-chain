@@ -5,7 +5,7 @@ class NodeService {
 
   addNodes(nodeAddresses: NodeAddress[]) {
     nodeAddresses.map((address) => new Node(address)).forEach((node) => this.nodes.add(node));
-    return this.nodes.getNodes();
+    return Array.from(this.nodes.getNodes().values());
   }
 
   getNodes() {

@@ -11,17 +11,17 @@ export interface INodes {
 }
 
 class Nodes implements INodes {
-  private _nodes: Set<Node>; // TODO: http://example.com みたいな形式を想定。プロトコルやパスがついてても問題なく動くようにする
+  private _nodes: Set<NodeAddress>; // TODO: http://example.com みたいな形式を想定。プロトコルやパスがついてても問題なく動くようにする
   constructor() {
     this._nodes = new Set();
   }
 
   getNodes() {
-    return this._nodes;
+    return new Set(Array.from(this._nodes.values()).map((address) => new Node(address)));
   }
 
   add(node: Node) {
-    this._nodes.add(node);
+    this._nodes.add(node.address);
   }
 }
 
