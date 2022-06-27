@@ -38,7 +38,9 @@ class BlockChain {
     this.nodes = new Set();
     this.current_transactions = [];
     // ジェネシスブロックを作る
-    this.addNewBlockToChain(100, '1');
+    const index = 1;
+    const newBlock = new Block(index, new Date('2022-06-27T03:54:00.000Z').getTime(), [], 100, '1');
+    this.chain.set(index, newBlock);
   }
 
   /**
@@ -111,6 +113,7 @@ class BlockChain {
    */
   registerNode(address: NodeAddress) {
     this.nodes.add(address);
+    console.debug('added node:', address);
   }
 
   /** ブロックチェーンが正しいかを確認する */
@@ -120,14 +123,22 @@ class BlockChain {
 
     while (current_index <= chain.size) {
       const block = chain.get(current_index);
+
       if (!block) {
         return false;
       }
 
+      if (block.index === 1) {
+        lastBlock = block;
+        current_index++;
+        continue;
+      }
+
       // ハッシュと proof of work の確認
-      const hasCorrectHash = block?.previousHash === this.generateBlockHash(lastBlock);
+      const hasCorrectHash = block.previousHash === this.generateBlockHash(lastBlock);
       const isCorrectProof = this.checkProof(lastBlock.proof, block.proof);
       if (!hasCorrectHash || !isCorrectProof) {
+        console.debug('invalid chain', hasCorrectHash, isCorrectProof);
         return false;
       }
 
@@ -147,14 +158,26 @@ class BlockChain {
 
     for (const node of neighbours) {
       const res = await axios.get(`${node}/chain`);
-      if (res.status === 200) {
-        length = res.data.length;
-        const chain = res.data.chain;
-        // 自身のチェーンより長くて有効なチェーンがあったらそれで置き換える
-        if (length > length && this.validChain(chain)) {
-          maxLength = length;
-          newChain = chain;
-        }
+
+      if (res.status !== 200) {
+        console.warn(`node(${node}): status is ${res.status}`);
+        continue;
+      }
+      if (!Number.parseInt(res.data?.length) || !res.data?.chain) {
+        console.warn(`node(${node}): invalid length or chain`);
+        continue;
+      }
+
+      const length = Number.parseInt(res.data.length);
+      const chain = new Map(
+        Object.entries(res.data.chain).map(([key, value]) => [Number.parseInt(key), value])
+      ) as BlockChain['chain'];
+
+      // 自身のチェーンより長くて有効なチェーンがあったらそれで置き換える
+      if (length > maxLength && this.validChain(chain)) {
+        console.debug('replaced chain by', node);
+        maxLength = length;
+        newChain = chain;
       }
     }
 
