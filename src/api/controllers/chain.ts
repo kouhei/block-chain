@@ -1,5 +1,5 @@
 import * as express from 'express';
-import { IChainUseCase } from '../../core/interfaces/useCases/IChainUseCase';
+import type { IChainUseCase } from '../../core/interfaces/useCases/IChainUseCase';
 
 export const chain = (chainUseCase: IChainUseCase) => {
   return express.Router().get('/', (_req, res) => {

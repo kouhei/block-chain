@@ -1,4 +1,4 @@
-import { Block } from '../../entities';
+import type { Block } from '../../entities';
 
 export interface IMinerUseCase {
   mineBlock(node_id: string): Block;

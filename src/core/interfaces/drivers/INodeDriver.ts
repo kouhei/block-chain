@@ -1,4 +1,4 @@
-import { Block } from '../../entities';
+import type { Block } from '../../entities';
 
 export interface ChainJson {
   chain?: { [index: string]: Block };

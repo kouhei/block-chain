@@ -1,8 +1,8 @@
-import { Block, Proof } from '../../entities';
-import { IBlockUseCase } from '../../interfaces/useCases/IBlockUseCase';
-import { IChainUseCase } from '../../interfaces/useCases/IChainUseCase';
-import { IMinerUseCase } from '../../interfaces/useCases/IMinerUseCase';
-import { IProofUseCase } from '../../interfaces/useCases/IProofUseCase';
+import type { Block, Proof } from '../../entities';
+import type { IBlockUseCase } from '../../interfaces/useCases/IBlockUseCase';
+import type { IChainUseCase } from '../../interfaces/useCases/IChainUseCase';
+import type { IMinerUseCase } from '../../interfaces/useCases/IMinerUseCase';
+import type { IProofUseCase } from '../../interfaces/useCases/IProofUseCase';
 
 export class MinerUseCase implements IMinerUseCase {
   constructor(

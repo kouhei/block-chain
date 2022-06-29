@@ -1,4 +1,4 @@
-import { Block, Index } from './block';
+import type { Block, Index } from './block';
 
 /** ブロックチェーンのデータを格納するところ */
 export interface IChain {

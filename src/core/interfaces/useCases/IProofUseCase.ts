@@ -1,4 +1,4 @@
-import { Proof } from '../../entities';
+import type { Proof } from '../../entities';
 
 export interface IProofUseCase {
   checkProof(lastProof: Proof, proof: Proof): boolean;

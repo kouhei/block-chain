@@ -1,7 +1,7 @@
 import * as express from 'express';
-import { NodeAddress } from '../../core/entities';
-import { IChainUseCase } from '../../core/interfaces/useCases/IChainUseCase';
-import { INodeUseCase } from '../../core/interfaces/useCases/INodeUseCase';
+import type { NodeAddress } from '../../core/entities';
+import type { IChainUseCase } from '../../core/interfaces/useCases/IChainUseCase';
+import type { INodeUseCase } from '../../core/interfaces/useCases/INodeUseCase';
 
 export const nodes = (nodeUseCase: INodeUseCase, chainUseCase: IChainUseCase) => {
   const router = express.Router();

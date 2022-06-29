@@ -1,4 +1,4 @@
-import { Node, NodeAddress } from '../../entities';
+import type { Node, NodeAddress } from '../../entities';
 
 export interface INodeUseCase {
   addNodes(nodeAddresses: NodeAddress[]): void;

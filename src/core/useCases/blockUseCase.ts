@@ -1,6 +1,7 @@
-import { Amount, Block, Hash, ITransactions, Proof, Transaction, Transactions, Uuid } from '../entities';
-import { ICryptoRepository } from '../interfaces/ICryptoRepository';
-import { IBlockUseCase } from '../interfaces/useCases/IBlockUseCase';
+import type { Amount, Hash, ITransactions, Proof, Uuid } from '../entities';
+import { Block, Transaction, Transactions } from '../entities';
+import type { ICryptoRepository } from '../interfaces/ICryptoRepository';
+import type { IBlockUseCase } from '../interfaces/useCases/IBlockUseCase';
 
 export class BlockUseCase implements IBlockUseCase {
   private cryptoRepository: ICryptoRepository;

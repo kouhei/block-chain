@@ -1,6 +1,6 @@
 import * as express from 'express';
-import { IBlockUseCase } from '../../core/interfaces/useCases/IBlockUseCase';
-import { IChainUseCase } from '../../core/interfaces/useCases/IChainUseCase';
+import type { IBlockUseCase } from '../../core/interfaces/useCases/IBlockUseCase';
+import type { IChainUseCase } from '../../core/interfaces/useCases/IChainUseCase';
 
 export const transactions = (blockUseCase: IBlockUseCase, chainUseCase: IChainUseCase) => {
   const router = express.Router();

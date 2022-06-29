@@ -1,8 +1,9 @@
-import { Block, Chain, IChain, Proof } from '../../entities';
-import { INodeDriver } from '../../interfaces/drivers/INodeDriver';
-import { IBlockUseCase } from '../../interfaces/useCases/IBlockUseCase';
-import { IChainUseCase } from '../../interfaces/useCases/IChainUseCase';
-import { IProofUseCase } from '../../interfaces/useCases/IProofUseCase';
+import type { IChain, Proof } from '../../entities';
+import { Block, Chain } from '../../entities';
+import type { INodeDriver } from '../../interfaces/drivers/INodeDriver';
+import type { IBlockUseCase } from '../../interfaces/useCases/IBlockUseCase';
+import type { IChainUseCase } from '../../interfaces/useCases/IChainUseCase';
+import type { IProofUseCase } from '../../interfaces/useCases/IProofUseCase';
 
 export class ChainUseCase implements IChainUseCase {
   private nodeRepository: INodeDriver;

@@ -1,6 +1,6 @@
-import { Proof } from '../../entities';
-import { ICryptoRepository } from '../../interfaces/ICryptoRepository';
-import { IProofUseCase } from '../../interfaces/useCases/IProofUseCase';
+import type { Proof } from '../../entities';
+import type { ICryptoRepository } from '../../interfaces/ICryptoRepository';
+import type { IProofUseCase } from '../../interfaces/useCases/IProofUseCase';
 
 export class ProofUseCase implements IProofUseCase {
   constructor(private cryptoRepository: ICryptoRepository) {}

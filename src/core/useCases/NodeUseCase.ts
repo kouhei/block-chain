@@ -1,5 +1,6 @@
-import { INodes, Node, NodeAddress } from '../entities';
-import { INodeUseCase } from '../interfaces/useCases/INodeUseCase';
+import type { INodes, NodeAddress } from '../entities';
+import { Node } from '../entities';
+import type { INodeUseCase } from '../interfaces/useCases/INodeUseCase';
 
 export class NodeUseCase implements INodeUseCase {
   constructor(private nodes: INodes) {}

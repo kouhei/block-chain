@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { Block } from '../entities';
-import { INodeDriver } from '../interfaces/drivers/INodeDriver';
+import type { Block } from '../entities';
+import type { INodeDriver } from '../interfaces/drivers/INodeDriver';
 
 export class NodeDriver implements INodeDriver {
   async getChain(url: string) {

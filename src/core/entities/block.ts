@@ -1,5 +1,5 @@
-import { Proof } from './proof';
-import { Transaction } from './transaction';
+import type { Proof } from './proof';
+import type { Transaction } from './transaction';
 
 export type Hash = string;
 export type TimeStamp = number;

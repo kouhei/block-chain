@@ -1,5 +1,5 @@
 import * as express from 'express';
-import { IMinerUseCase } from '../../core/interfaces/useCases/IMinerUseCase';
+import type { IMinerUseCase } from '../../core/interfaces/useCases/IMinerUseCase';
 import { node_id } from '../util';
 
 export const mine = (minerUseCase: IMinerUseCase) => {
