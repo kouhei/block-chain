@@ -10,7 +10,7 @@ export interface INodes {
   add(node: Node): void;
 }
 
-class Nodes implements INodes {
+export class Nodes implements INodes {
   private _nodes: Set<NodeAddress>; // TODO: http://example.com みたいな形式を想定。プロトコルやパスがついてても問題なく動くようにする
   constructor() {
     this._nodes = new Set();
@@ -25,4 +25,4 @@ class Nodes implements INodes {
   }
 }
 
-export const nodes = new Nodes();
+// export const nodes = new Nodes();

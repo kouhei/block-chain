@@ -1,10 +1,12 @@
-import { Block, Hash } from '../../domain/block';
-import { Amount, ITransactions, Transaction, Transactions, Uuid } from '../../domain/transaction';
-import { Proof } from '../../domain/types';
-import { encryptSha256 } from '../../domain/utils/util';
+import { Amount, Block, Hash, ITransactions, Proof, Transaction, Transactions, Uuid } from '../entities';
+import { ICryptoRepository } from '../interfaces/ICryptoRepository';
+import { IBlockUseCase } from '../interfaces/useCases/IBlockUseCase';
 
-class BlockService {
-  constructor(private transactions: ITransactions) {}
+export class BlockUseCase implements IBlockUseCase {
+  private cryptoRepository: ICryptoRepository;
+  constructor(private transactions: ITransactions, cryptoRepository: ICryptoRepository) {
+    this.cryptoRepository = cryptoRepository;
+  }
 
   /**
    * create a new transaction and add to the list contained in next block.
@@ -35,8 +37,6 @@ class BlockService {
     const { index, timestamp, transactions, proof, previousHash } = block;
     const blockMap = new Map(Object.entries({ index, timestamp, transactions, proof, previousHash }));
     const jsonStr = JSON.stringify(Array.from(blockMap));
-    return encryptSha256(jsonStr);
+    return this.cryptoRepository.encryptSha256(jsonStr);
   }
 }
-
-export const blockService = new BlockService(new Transactions());
