@@ -24,5 +24,3 @@ export class Nodes implements INodes {
     this._nodes.add(node.address);
   }
 }
-
-// export const nodes = new Nodes();
