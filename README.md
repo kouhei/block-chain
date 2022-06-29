@@ -4,23 +4,25 @@
 
 `npm start {port}`
 
-## Entities (entities)
+# src/core の中身
+
+## entities/ (Entities)
 
 ビジネスルールの為のデータ構造、もしくはメソッドを持ったオブジェクト。
 
 この層はその機能の詳細については一切書きません。
 「コイツはこんな奴でこんなことをできる。こんなことをしている奴だ。」という感じです。
 
-## Use cases (useCase)
+## useCases (Use cases)
 
 アプリケーション固有のビジネスルール。エンティティとのデータの流れを組み立てる。
 どんな入力に対してどんな出力をするかを定義する。ここでもドメイン同様にそれらの詳細に関しては全く記述しない。
 
-## interface (interfaces)
+## interfaces (interface)
 
 外部から、ユースケースとエンティティーで使われる内部形式にデータを変換、または内部から外部の機能にもっとも便利な形式に、データを変換するアダプター。
 
-## Frameworks & Drivers (infrastructure)
+## infrastructure (Frameworks & Drivers)
 
 フレームワークやツールから構成される。このレイヤーには、多くのコードは書かない。ただし、ひとつ内側の円と通信するつなぎのコードは、ここに含まれる。
 
