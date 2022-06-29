@@ -7,7 +7,7 @@ import { BlockUseCase } from '../core/useCases/blockUseCase';
 import { ChainUseCase } from '../core/useCases/Chain/ChainUseCase';
 import { MinerUseCase } from '../core/useCases/Chain/mineBlockUseCase';
 import { NodeUseCase } from '../core/useCases/NodeUseCase';
-import { ProofUseCase } from '../core/useCases/Proof/ProofUseCase';
+import { ProofUseCase } from '../core/useCases/ProofUseCase';
 import { chain, mine, nodes, transactions } from './controllers';
 
 const nodeList = new Nodes();
