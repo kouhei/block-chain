@@ -81,10 +81,6 @@ export class ChainUseCase implements IChainUseCase {
       try {
         const data = await this.nodeRepository.getChain(`${address}/chain`);
 
-        // if (res.status !== 200) {
-        //   console.warn(`node(${address}): status is ${res.status}`);
-        //   continue;
-        // }
         if (!data?.length || !data?.chain) {
           console.warn(`node(${address}): invalid length or chain`);
           continue;
@@ -105,14 +101,10 @@ export class ChainUseCase implements IChainUseCase {
     }
 
     if (newChain) {
-      this.replaceChain(newChain);
+      this.chain = newChain;
       return true;
     }
 
     return false;
-  }
-
-  private replaceChain(newChain: IChain) {
-    this.chain = newChain;
   }
 }
