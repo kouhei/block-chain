@@ -1,13 +1,10 @@
-import type { Amount, Hash, ITransactions, Proof, Uuid } from '../entities';
-import { Block, Transaction, Transactions } from '../entities';
-import type { ICryptoRepository } from '../interfaces/ICryptoRepository';
-import type { IBlockUseCase } from '../interfaces/useCases/IBlockUseCase';
+import type { Amount, Hash, ITransactions, Proof, Uuid } from '../Entities';
+import { Block, Transaction, Transactions } from '../Entities';
+import type { ICryptoRepository } from '../Interfaces/ICryptoRepository';
+import type { IBlockUseCase } from '../Interfaces/UseCases/IBlockUseCase';
 
 export class BlockUseCase implements IBlockUseCase {
-  private cryptoRepository: ICryptoRepository;
-  constructor(private transactions: ITransactions, cryptoRepository: ICryptoRepository) {
-    this.cryptoRepository = cryptoRepository;
-  }
+  constructor(private transactions: ITransactions, private cryptoRepository: ICryptoRepository) {}
 
   /**
    * create a new transaction and add to the list contained in next block.

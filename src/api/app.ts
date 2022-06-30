@@ -1,15 +1,15 @@
 import * as bodyParser from 'body-parser';
 import * as express from 'express';
 import { v4 as uuidv4 } from 'uuid';
-import { Nodes, Transactions } from '../core/entities';
-import { CryptoRepository } from '../core/infrastructure/cryptoRepository';
-import { NodeDriver } from '../core/infrastructure/NodeDriver';
-import { BlockUseCase } from '../core/useCases/blockUseCase';
-import { ChainUseCase } from '../core/useCases/Chain/ChainUseCase';
-import { MinerUseCase } from '../core/useCases/Chain/mineBlockUseCase';
-import { NodeUseCase } from '../core/useCases/NodeUseCase';
-import { ProofUseCase } from '../core/useCases/ProofUseCase';
-import { chain, mine, nodes, transactions } from './controllers';
+import { Nodes, Transactions } from '../Core/Entities';
+import { CryptoRepository } from '../Core/Infrastructure/CryptoRepository';
+import { NodeDriver } from '../Core/Infrastructure/NodeDriver';
+import { BlockUseCase } from '../Core/UseCases/BlockUseCase';
+import { ChainUseCase } from '../Core/UseCases/Chain/ChainUseCase';
+import { MinerUseCase } from '../Core/UseCases/Chain/MinerUseCase';
+import { NodeUseCase } from '../Core/UseCases/NodeUseCase';
+import { ProofUseCase } from '../Core/UseCases/ProofUseCase';
+import { chain, mine, nodes, transactions } from './Controllers';
 
 const NODE_ID = uuidv4();
 const PORT = Number.parseInt(process.argv[2]) || 3000;
@@ -17,10 +17,11 @@ const PORT = Number.parseInt(process.argv[2]) || 3000;
 const nodeList = new Nodes();
 const transactionList = new Transactions();
 const cryptoRepository = new CryptoRepository();
+const nodeDriver = new NodeDriver();
+const nodeUseCase = new NodeUseCase(nodeList, nodeDriver);
 const proofUseCase = new ProofUseCase(cryptoRepository);
-const nodeUseCase = new NodeUseCase(nodeList);
 const blockUseCase = new BlockUseCase(transactionList, cryptoRepository);
-const chainUseCase = new ChainUseCase(new NodeDriver(), blockUseCase, proofUseCase);
+const chainUseCase = new ChainUseCase(blockUseCase, proofUseCase, nodeUseCase);
 const minerUseCase = new MinerUseCase(chainUseCase, proofUseCase, blockUseCase);
 
 const app = express();

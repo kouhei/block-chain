@@ -1,4 +1,4 @@
-export { chain } from './chain';
-export { mine } from './mine';
-export { nodes } from './nodes';
-export { transactions } from './transactions';
+export { chain } from './Chain';
+export { mine } from './Mine';
+export { nodes } from './Nodes';
+export { transactions } from './Transactions';

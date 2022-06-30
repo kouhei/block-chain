@@ -1,25 +1,22 @@
-import type { IChain, Proof } from '../../entities';
-import { Block, Chain } from '../../entities';
-import type { INodeDriver } from '../../interfaces/drivers/INodeDriver';
-import type { IBlockUseCase } from '../../interfaces/useCases/IBlockUseCase';
-import type { IChainUseCase } from '../../interfaces/useCases/IChainUseCase';
-import type { IProofUseCase } from '../../interfaces/useCases/IProofUseCase';
+import type { IChain, Proof } from '../../Entities';
+import { Block, Chain } from '../../Entities';
+import type { IBlockUseCase } from '../../Interfaces/UseCases/IBlockUseCase';
+import type { IChainUseCase } from '../../Interfaces/UseCases/IChainUseCase';
+import { INodeUseCase } from '../../Interfaces/UseCases/INodeUseCase';
+import type { IProofUseCase } from '../../Interfaces/UseCases/IProofUseCase';
 
 export class ChainUseCase implements IChainUseCase {
-  private nodeRepository: INodeDriver;
-  private blockUseCase: IBlockUseCase;
-  private proofUseCase: IProofUseCase;
   chain: IChain;
 
-  constructor(nodeRepository: INodeDriver, blockUseCase: IBlockUseCase, proofUseCase: IProofUseCase) {
-    this.nodeRepository = nodeRepository;
+  constructor(
+    private blockUseCase: IBlockUseCase,
+    private proofUseCase: IProofUseCase,
+    private nodeUseCase: INodeUseCase
+  ) {
     // ジェネシスブロックを作る
     const index = 1;
     const newBlock = new Block(index, new Date('2022-06-27T03:54:00.000Z').getTime(), [], 100, '1');
     this.chain = new Chain([newBlock]);
-
-    this.blockUseCase = blockUseCase;
-    this.proofUseCase = proofUseCase;
   }
 
   get lastBlock(): Block {
@@ -79,7 +76,7 @@ export class ChainUseCase implements IChainUseCase {
 
     for (const address of addresses) {
       try {
-        const data = await this.nodeRepository.getChain(`${address}/chain`);
+        const data = await this.nodeUseCase.getOtherNodeChain(`${address}/chain`);
 
         if (!data?.length || !data?.chain) {
           console.warn(`node(${address}): invalid length or chain`);

@@ -1,4 +1,4 @@
-import type { Amount, Uuid } from '../../entities';
+import type { Amount, Uuid } from '../../Entities';
 
 export interface ITransactionUseCase {
   /**

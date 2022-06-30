@@ -1,7 +1,7 @@
 import * as express from 'express';
-import type { NodeAddress } from '../../core/entities';
-import type { IChainUseCase } from '../../core/interfaces/useCases/IChainUseCase';
-import type { INodeUseCase } from '../../core/interfaces/useCases/INodeUseCase';
+import type { NodeAddress } from '../../Core/Entities';
+import type { IChainUseCase } from '../../Core/Interfaces/UseCases/IChainUseCase';
+import type { INodeUseCase } from '../../Core/Interfaces/UseCases/INodeUseCase';
 
 export const nodes = (nodeUseCase: INodeUseCase, chainUseCase: IChainUseCase) => {
   const router = express.Router();
@@ -22,7 +22,6 @@ export const nodes = (nodeUseCase: INodeUseCase, chainUseCase: IChainUseCase) =>
     });
   });
 
-  // TODO: chain/resolveの方が良くない？
   router.get('/resolve', async (_req, res) => {
     const addresses = Array.from(nodeUseCase.getNodes().values()).map((node) => node.address);
     const isReplaced = await chainUseCase.resolveConflicts(addresses);

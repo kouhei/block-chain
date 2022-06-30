@@ -1,4 +1,4 @@
-import type { Block, IChain, Proof } from '../../entities';
+import type { Block, IChain, Proof } from '../../Entities';
 
 export interface IChainUseCase {
   chain: IChain;

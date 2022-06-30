@@ -1,13 +1,13 @@
 import * as express from 'express';
-import type { IBlockUseCase } from '../../core/interfaces/useCases/IBlockUseCase';
-import type { IChainUseCase } from '../../core/interfaces/useCases/IChainUseCase';
+import type { IBlockUseCase } from '../../Core/Interfaces/UseCases/IBlockUseCase';
+import type { IChainUseCase } from '../../Core/Interfaces/UseCases/IChainUseCase';
 
 export const transactions = (blockUseCase: IBlockUseCase, chainUseCase: IChainUseCase) => {
   const router = express.Router();
 
   router.post('/new', (req, res) => {
-    const sender = req.body?.sender;
-    const recipient = req.body?.recipient;
+    const sender = req.body?.sender as string;
+    const recipient = req.body?.recipient as string;
     const amount = Number.parseInt(req.body?.amount);
 
     if (!sender || !recipient || !amount) {
@@ -15,7 +15,7 @@ export const transactions = (blockUseCase: IBlockUseCase, chainUseCase: IChainUs
       return;
     }
 
-    blockUseCase.addTransaction(sender as string, recipient as string, amount);
+    blockUseCase.addTransaction(sender, recipient, amount);
     const blockId = chainUseCase.lastBlock.index + 1;
 
     res.status(201).json({

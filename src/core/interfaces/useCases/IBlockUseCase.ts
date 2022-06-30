@@ -1,4 +1,4 @@
-import type { Amount, Block, Hash, Proof, Uuid } from '../../entities';
+import type { Amount, Block, Hash, Proof, Uuid } from '../../Entities';
 
 export interface IBlockUseCase {
   addTransaction(sender: Uuid, recipient: Uuid, amount: Amount): void;

@@ -1,5 +1,5 @@
 import { createHash } from 'crypto';
-import type { ICryptoRepository } from '../interfaces/ICryptoRepository';
+import type { ICryptoRepository } from '../Interfaces/ICryptoRepository';
 
 export class CryptoRepository implements ICryptoRepository {
   encryptSha256(str: string) {

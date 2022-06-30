@@ -1,5 +1,5 @@
 import * as express from 'express';
-import type { IMinerUseCase } from '../../core/interfaces/useCases/IMinerUseCase';
+import type { IMinerUseCase } from '../../Core/Interfaces/UseCases/IMinerUseCase';
 
 export const mine = (minerUseCase: IMinerUseCase, node_id: string) => {
   return express.Router().get('/', (_req, res) => {
