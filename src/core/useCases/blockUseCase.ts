@@ -1,6 +1,6 @@
 import type { Amount, Hash, ITransactions, Proof, Uuid } from '../Entities';
 import { Block, Transaction, Transactions } from '../Entities';
-import type { ICryptoRepository } from '../Interfaces/ICryptoRepository';
+import type { ICryptoRepository } from '../Interfaces/Repositories/ICryptoRepository';
 import type { IBlockUseCase } from '../Interfaces/UseCases/IBlockUseCase';
 
 export class BlockUseCase implements IBlockUseCase {

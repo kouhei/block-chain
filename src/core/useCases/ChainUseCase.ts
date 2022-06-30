@@ -1,9 +1,9 @@
-import type { IChain, Proof } from '../../Entities';
-import { Block, Chain } from '../../Entities';
-import type { IBlockUseCase } from '../../Interfaces/UseCases/IBlockUseCase';
-import type { IChainUseCase } from '../../Interfaces/UseCases/IChainUseCase';
-import { INodeUseCase } from '../../Interfaces/UseCases/INodeUseCase';
-import type { IProofUseCase } from '../../Interfaces/UseCases/IProofUseCase';
+import type { IChain, Proof } from '../Entities';
+import { Block, Chain } from '../Entities';
+import type { IBlockUseCase } from '../Interfaces/UseCases/IBlockUseCase';
+import type { IChainUseCase } from '../Interfaces/UseCases/IChainUseCase';
+import { INodeUseCase } from '../Interfaces/UseCases/INodeUseCase';
+import type { IProofUseCase } from '../Interfaces/UseCases/IProofUseCase';
 
 export class ChainUseCase implements IChainUseCase {
   chain: IChain;

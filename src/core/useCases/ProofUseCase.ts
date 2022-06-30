@@ -1,5 +1,5 @@
 import type { Proof } from '../Entities';
-import type { ICryptoRepository } from '../Interfaces/ICryptoRepository';
+import type { ICryptoRepository } from '../Interfaces/Repositories/ICryptoRepository';
 import type { IProofUseCase } from '../Interfaces/UseCases/IProofUseCase';
 
 export class ProofUseCase implements IProofUseCase {
