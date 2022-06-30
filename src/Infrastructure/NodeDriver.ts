@@ -1,6 +1,6 @@
 import axios, { AxiosResponseHeaders } from 'axios';
-import type { Block } from '../Entities';
-import type { INodeDriver } from '../Interfaces/Drivers/INodeDriver';
+import type { Block } from '../Core/Entities';
+import type { INodeDriver } from '../Core/Interfaces/Drivers/INodeDriver';
 
 class NetWorkError extends Error {
   constructor(error: { status: number; statusText: string; headers: AxiosResponseHeaders; message: string }) {

@@ -2,13 +2,13 @@ import * as bodyParser from 'body-parser';
 import * as express from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import { Nodes, Transactions } from '../Core/Entities';
-import { CryptoRepository } from '../Core/Infrastructure/CryptoRepository';
-import { NodeDriver } from '../Core/Infrastructure/NodeDriver';
 import { BlockUseCase } from '../Core/UseCases/BlockUseCase';
 import { ChainUseCase } from '../Core/UseCases/ChainUseCase';
 import { MinerUseCase } from '../Core/UseCases/MinerUseCase';
 import { NodeUseCase } from '../Core/UseCases/NodeUseCase';
 import { ProofUseCase } from '../Core/UseCases/ProofUseCase';
+import { CryptoRepository } from '../Infrastructure/CryptoRepository';
+import { NodeDriver } from '../Infrastructure/NodeDriver';
 import { chain, mine, nodes, transactions } from './Controllers';
 
 const NODE_ID = uuidv4();
