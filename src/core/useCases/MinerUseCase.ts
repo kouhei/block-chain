@@ -14,9 +14,13 @@ export class MinerUseCase implements IMinerUseCase {
   /** @param node_id 採掘者のid */
   mineBlock(node_id: string): Block {
     const newProof = this.calcProofOfWork(this.chainUseCase.lastBlock.proof);
+    return this.addMinerTransaction(node_id, newProof);
+  }
+
+  private addMinerTransaction(node_id: string, proof: Proof) {
     // sender は採掘者が新しいコインを採掘したことを表すために"0"とする
     this.blockUseCase.addTransaction('0', node_id, 1);
-    return this.chainUseCase.addNewBlockToChain(newProof);
+    return this.chainUseCase.addNewBlockToChain(proof);
   }
 
   private calcProofOfWork(lastProof: Proof) {
